@@ -86,7 +86,10 @@ extern "C"
 #include "sigbuffer.h"
 #include "rate_control.h"
 #include "budget_dump.h"
+
 }
+
+#include "serialaize.h"	
 
 
 #ifdef _MSC_VER
@@ -191,6 +194,7 @@ tco_enc_context_t* tco_enc_init(tco_conf_t* conf, image_t* image, const char* bu
 	}
 	return ctx;
 }
+
 
 int tco_enc_close(tco_enc_context_t* ctx)
 {
@@ -428,6 +432,16 @@ int tco_enc_image( tco_enc_context_t* ctx, image_t* image_in, void* codestream_b
 			if (rate_control_process_presinct(ctx->rc[column], ctx->precinct[column], &rc_results) < 0) {
 				return -1;
 			}
+
+			std::ofstream outfile("data.txt");
+
+			//test
+			serialize_conf(outfile, ctx->rc[column]);
+
+			outfile.close();
+
+			//deser(ctx->rc[column])
+
 
 			quantize_precinct(ctx->precinct[column],rc_results.gtli_table_data,ctx->conf.dq_type);
 

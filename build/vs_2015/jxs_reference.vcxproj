@@ -270,6 +270,7 @@
     <ClInclude Include="..\..\src\rate_control.h" />
     <ClInclude Include="..\..\src\rct.h" />
     <ClInclude Include="..\..\src\sb_weighting.h" />
+    <ClInclude Include="..\..\src\serialaize.h" />
     <ClInclude Include="..\..\src\sigbuffer.h" />
     <ClInclude Include="..\..\src\sig_mag.h" />
     <ClInclude Include="..\..\src\slice.h" />
