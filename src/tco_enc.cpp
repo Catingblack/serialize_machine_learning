@@ -60,6 +60,9 @@
 #include <stdint.h>
 #include <assert.h>
 
+
+extern "C"
+{
 #include "common.h"
 #include "xs_markers.h"
 #include "tco_conf.h"
@@ -83,6 +86,8 @@
 #include "sigbuffer.h"
 #include "rate_control.h"
 #include "budget_dump.h"
+}
+
 
 #ifdef _MSC_VER
 #include <intrin.h>
@@ -419,6 +424,7 @@ int tco_enc_image( tco_enc_context_t* ctx, image_t* image_in, void* codestream_b
 			fill_precinct(ctx->precinct[column],ctx->image_transformed, line_idx >> (ctx->map.n_lvls_v - 1));
 			update_gclis(ctx->precinct[column]);
 
+			//todo serialize params
 			if (rate_control_process_presinct(ctx->rc[column], ctx->precinct[column], &rc_results) < 0) {
 				return -1;
 			}

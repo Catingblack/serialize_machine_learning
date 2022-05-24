@@ -2,10 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\cpp\jpeg-xsm-ref_sw\build\vs_2015\x64\Debug\jxs_reference.dll</FullPath>
+      <FullPath>C:\cpp\jpeg-xsm-ref_sw\serialize_machine_learning\build\vs_2015\x64\Debug\jxs_reference.dll</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\cpp\jpeg-xsm-ref_sw\build\vs_2015\x64\Debug\jxs_encoder.exe</FullPath>
+      <FullPath>C:\cpp\jpeg-xsm-ref_sw\serialize_machine_learning\build\vs_2015\x64\Debug\jxs_encoder.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

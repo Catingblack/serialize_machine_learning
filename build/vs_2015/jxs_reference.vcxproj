@@ -202,7 +202,7 @@
     <ClCompile Include="..\..\src\sig_mag.c" />
     <ClCompile Include="..\..\src\tco_conf.c" />
     <ClCompile Include="..\..\src\tco_dec.c" />
-    <ClCompile Include="..\..\src\tco_enc.c" />
+    <ClCompile Include="..\..\src\tco_enc.cpp" />
     <ClCompile Include="..\..\src\sig_flags.c" />
     <ClCompile Include="..\..\src\version.c" />
     <ClCompile Include="..\..\src\xs_markers.c" />

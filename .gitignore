@@ -41,6 +41,7 @@
 
 # Visual Studio Compiler Artifact
 .vs/
+build/
 *.tlog
 *.log
 *.ipdb
