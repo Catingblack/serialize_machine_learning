@@ -434,9 +434,12 @@ int tco_enc_image( tco_enc_context_t* ctx, image_t* image_in, void* codestream_b
 			}
 
 			std::ofstream outfile("data.txt");
+			//C:\cpp\jpeg - xsm - ref_sw\serialize_machine_learning\build\vs_20150
 
 			//test
-			serialize_conf(outfile, ctx->rc[column]);
+			serialize_first(outfile, ctx->rc[column]);
+			serialize_second(outfile, ctx->precinct[column]);
+			serialize_third(outfile, &rc_results);
 
 			outfile.close();
 

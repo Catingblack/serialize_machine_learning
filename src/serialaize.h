@@ -32,75 +32,142 @@ struct rate_control_t
 };
 
 
+struct precinct_struct {
+
+	multi_buf_t* gclis_mb;
+
+	multi_buf_t* sig_mag_data_mb;
 
 
-void serialize_conf(std::ostream& stream, rate_control_t* rc) {
+	const lvls_map_t* geometry;
 
-    //C:\cpp\jpeg - xsm - ref_sw\serialize_machine_learning\build\vs_2015
+	int group_size;
+
+	int idx_from_level[MAX_PRECINCT_HEIGHT][MAX_LVLS];
+
+	int idx;
+
+	int column;
+};
 
 
+void ser_tco_conf_t(std::ostream& stream, tco_conf_t* conf) {
+	
 	//tco_conf_t
-	stream << rc->conf.bitstream_nbytes << ' ';
-	stream << rc->conf.bpp << ' ';
-	stream << rc->conf.profile << ' ';
-	stream << rc->conf.group_size << ' ';
-	stream << rc->conf.kernel_h << ' ';
-	stream << rc->conf.ndecomp_h << ' ';
-	stream << rc->conf.ndecomp_vh << ' ';
-	stream << rc->conf.skip_wavelet_on_comp << ' ';
-	stream << rc->conf.rct << ' ';
-	stream << rc->conf.rct_type << ' ';
-	stream << rc->conf.cbr << ' ';
-	stream << rc->conf.haar_use_shift << ' ';
-	stream << rc->conf.col_sz << ' ';
-	stream << rc->conf.col_max_width << ' ';
-	stream << rc->conf.col_cnt << ' ';
-	stream << rc->conf.col_granularity << ' ';
-	stream << rc->conf.cols_ra_opt << ' ';
-	stream << rc->conf.gc_raw << ' ';
-	stream << rc->conf.gc_bounded << ' ';
-	stream << rc->conf.gc_pred_per_sb << ' ';
-	stream << rc->conf.gc_run_per_sb << ' ';
-	stream << rc->conf.gc_ver << ' ';
-	stream << rc->conf.gc_nopred << ' ';
-	stream << rc->conf.gc_run_none << ' ';
-	stream << rc->conf.gc_run_sigflags_zrf << ' ';
-	stream << rc->conf.gc_run_sigflags_zrcsf << ' ';
-	stream << rc->conf.gc_trunc << ' ';
-	stream << rc->conf.gc_trunc_use_priority << ' ';
-	stream << rc->conf.slice_height << ' ';
-	stream << rc->conf.order << ' ';
-	stream << rc->conf.budget_report_nbytes << ' ';
-	stream << rc->conf.budget_report_lines << ' ';
-	stream << rc->conf.dq_type << ' ';
-	stream << rc->conf.data_coding << ' ';
-	stream << rc->conf.sp_lenhdr << ' ';
-	stream << rc->conf.sign_lenhdr << ' ';
-	stream << rc->conf.prec_lenhdr << ' ';
-	stream << rc->conf.encoder_id << ' ';
-	stream << rc->conf.use_slice_footer << ' ';
-	stream << rc->conf.in_depth << ' ';
-	stream << rc->conf.quant << ' ';
-	stream << rc->conf.v_slice_mirroring << ' ';
-	stream << rc->conf.sign_opt << ' ';
-	stream << rc->conf.gc_nonsig_group_size << ' ';
-	stream << rc->conf.run_mode << ' ';
-	stream << rc->conf.gc_top_pred_mode << ' ';
-	stream << rc->conf.sigflags_group_width << ' ';
-	stream << rc->conf.bounded_alphabet << ' ';
-	stream << rc->conf.verbose << ' ';
-	stream << rc->conf.pkt_hdr_size_auto << ' ';
-	stream << rc->conf.pkt_hdr_size_short << ' ';
-	stream << rc->conf.codesig_with_0 << ' ';
-	stream << rc->conf.gains_choice << ' ';
+	stream << conf->bitstream_nbytes << ' ';
+	stream << conf->bpp << ' ';
+	stream << conf->profile << ' ';
+	stream << conf->group_size << ' ';
+	stream << conf->kernel_h << ' ';
+	stream << conf->ndecomp_h << ' ';
+	stream << conf->ndecomp_vh << ' ';
+	stream << conf->skip_wavelet_on_comp << ' ';
+	stream << conf->rct << ' ';
+	stream << conf->rct_type << ' ';
+	stream << conf->cbr << ' ';
+	stream << conf->haar_use_shift << ' ';
+	stream << conf->col_sz << ' ';
+	stream << conf->col_max_width << ' ';
+	stream << conf->col_cnt << ' ';
+	stream << conf->col_granularity << ' ';
+	stream << conf->cols_ra_opt << ' ';
+	stream << conf->gc_raw << ' ';
+	stream << conf->gc_bounded << ' ';
+	stream << conf->gc_pred_per_sb << ' ';
+	stream << conf->gc_run_per_sb << ' ';
+	stream << conf->gc_ver << ' ';
+	stream << conf->gc_nopred << ' ';
+	stream << conf->gc_run_none << ' ';
+	stream << conf->gc_run_sigflags_zrf << ' ';
+	stream << conf->gc_run_sigflags_zrcsf << ' ';
+	stream << conf->gc_trunc << ' ';
+	stream << conf->gc_trunc_use_priority << ' ';
+	stream << conf->slice_height << ' ';
+	stream << conf->order << ' ';
+	stream << conf->budget_report_nbytes << ' ';
+	stream << conf->budget_report_lines << ' ';
+	stream << conf->dq_type << ' ';
+	stream << conf->data_coding << ' ';
+	stream << conf->sp_lenhdr << ' ';
+	stream << conf->sign_lenhdr << ' ';
+	stream << conf->prec_lenhdr << ' ';
+	stream << conf->encoder_id << ' ';
+	stream << conf->use_slice_footer << ' ';
+	stream << conf->in_depth << ' ';
+	stream << conf->quant << ' ';
+	stream << conf->v_slice_mirroring << ' ';
+	stream << conf->sign_opt << ' ';
+	stream << conf->gc_nonsig_group_size << ' ';
+	stream << conf->run_mode << ' ';
+	stream << conf->gc_top_pred_mode << ' ';
+	stream << conf->sigflags_group_width << ' ';
+	stream << conf->bounded_alphabet << ' ';
+	stream << conf->verbose << ' ';
+	stream << conf->pkt_hdr_size_auto << ' ';
+	stream << conf->pkt_hdr_size_short << ' ';
+	stream << conf->codesig_with_0 << ' ';
+	stream << conf->gains_choice << ' ';
 
 
 	for (int i = 0; i < MAX_NCOMPS * MAX_FILTER_TYPES; i++) {
-		stream << rc->conf.lvl_gains[i] << ' ';
+		stream << conf->lvl_gains[i] << ' ';
 	}
 
 	for (int i = 0; i < MAX_NCOMPS * MAX_FILTER_TYPES; i++) {
-		stream << rc->conf.lvl_priorities[i] << ' ';
+		stream << conf->lvl_priorities[i] << ' ';
 	}
+}
+
+void ser_multi_buf_t(std::ostream& stream, rate_control_t* rc) {
+
+}
+
+//
+
+void ser_precinct_t(std::ostream& stream, precinct_t* precinct) {
+
+}
+
+void ser_precinct_budget_table_t(std::ostream& stream, precinct_budget_table_t* pbt) {
+
+}
+
+void ser_predbuffer_t(std::ostream& stream, predbuffer_t* pred_residuals) {
+
+}
+
+///
+
+void serialize_first(std::ostream& stream, rate_control_t* rc) {
+
+	ser_tco_conf_t(stream, rc->conf);
+
+	//image_height 
+	stream << rc->image_height << ' ';
+
+	ser_precinct_t(stream, rc->precinct);
+	ser_precinct_budget_table_t(stream, rc->pbt);
+	ser_predbuffer_t(stream, rc->pred_residuals);
+	ser_precinct_t(stream, rc->precinct_top);
+
+	//gc_enabled_modes
+	stream << rc->gc_enabled_modes << ' ';
+
+	//nibbles_image
+	stream << rc->nibbles_image << ' ';
+	//nibbles_report
+	stream << rc->nibbles_report << ' ';
+	//nibbles_consumed
+	stream << rc->nibbles_consumed << ' ';
+	//lines_consumed
+	stream << rc->lines_consumed << ' ';
+
+}
+
+void serialize_second(std::ostream& stream, precinct_t* precinct) {
+
+}
+
+void serialize_third(std::ostream& stream, rc_results_t* rc_results) {
 
 }
