@@ -437,9 +437,9 @@ int tco_enc_image( tco_enc_context_t* ctx, image_t* image_in, void* codestream_b
 			//C:\cpp\jpeg - xsm - ref_sw\serialize_machine_learning\build\vs_20150
 
 			//test
-			serialize_first(outfile, ctx->rc[column]);
-			serialize_second(outfile, ctx->precinct[column]);
-			serialize_third(outfile, &rc_results);
+			ser_rate_control_t(outfile, ctx->rc[column]);
+			ser_precinct_t(outfile, ctx->precinct[column]);
+			ser_rc_results_t(outfile, &rc_results);
 
 			outfile.close();
 
