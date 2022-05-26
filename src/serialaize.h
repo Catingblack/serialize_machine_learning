@@ -117,7 +117,7 @@ void ser_multi_buf_t(std::ostream& stream, multi_buf_t* gclis_mb) {
 	//element_size
 	stream << gclis_mb->element_size << ' ';
 
-	//union bufs 
+	//union bufs todo 
 	//int8_t** s8
 	stream << gclis_mb->bufs.s8 << ' ';
 	//uint8_t** u8
@@ -131,12 +131,12 @@ void ser_multi_buf_t(std::ostream& stream, multi_buf_t* gclis_mb) {
 	//uint32_t** u32
 	stream << gclis_mb->bufs.u32 << ' ';
 
-	//FILE** fout
+	//FILE** fout todo
 	stream << gclis_mb->fout << ' ';
 
 	//dump_mode
 	stream << gclis_mb->dump_mode << ' ';
-	//void* storage
+	//void* storage todo
 	//stream << gclis_mb->storage << ' ';
 
 }
@@ -355,14 +355,14 @@ void ser_predbuffer_t(std::ostream& stream, predbuffer_t* pred_residuals) {
 		directional_prediction_t direction[PRED_COUNT];
 	};*/
 
-	//multi_buf_t* gclis_mb[MAX_GCLI + 1]
+	//multi_buf_t* gclis_mb[MAX_GCLI + 1] todo
 	for (int i = 0; i < PRED_COUNT; i++) {
 		for (int j = 0; j < MAX_GCLI + 1; j++) {
 			ser_multi_buf_t(stream, (pred_residuals->direction[i]).gclis_mb[j]);
 		}
 	}
 
-	//multi_buf_t* predictors_mb[MAX_GCLI + 1]
+	//multi_buf_t* predictors_mb[MAX_GCLI + 1] todo
 	for (int i = 0; i < PRED_COUNT; i++) {
 		for (int j = 0; j < MAX_GCLI + 1; j++) {
 			ser_multi_buf_t(stream, (pred_residuals->direction[i]).predictors_mb[j]);
@@ -482,9 +482,9 @@ void ser_precinct_budget_info_t(std::ostream& stream, precinct_budget_info_t* pb
 
 
 void ser_budget_dump_struct_t(std::ostream& stream, budget_dump_struct_t* budget_dump_handle) {
-
-	if (budget_dump_handle == nullptr) { return; }
-	//output_file -> FILE*-> void* _Placeholder
+	//todo
+	//if (budget_dump_handle == nullptr) { return; }
+	//output_file -> FILE*-> void* _Placeholder todo
 	stream << budget_dump_handle->output_file->_Placeholder << ' ';
 	//n_lvls
 	stream << budget_dump_handle->n_lvls << ' ';
