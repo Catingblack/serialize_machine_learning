@@ -481,7 +481,7 @@ void ser_precinct_budget_info_t(std::ostream& stream, precinct_budget_info_t* pb
 }
 
 
-void ser_budget_dump_struct_t(std::ostream& stream, budget_dump_struct_t* budget_dump_handle) {
+void ser_budget_dump_struct_t(std::ostream& stream, struct budget_dump_struct_t* budget_dump_handle) {
 	//todo
 	//if (budget_dump_handle == nullptr) { return; }
 	//output_file -> FILE*-> void* _Placeholder todo
