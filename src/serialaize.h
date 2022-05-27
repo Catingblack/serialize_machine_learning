@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 
+
+
 struct rate_control_t
 {
 	tco_conf_t conf;
@@ -93,11 +95,6 @@ void ser_uint8_t_const(std::ostream& stream, const uint8_t* ptr) {
 
 //
 
-//serialize for ptrptr 
-
-
-
-//
 
 
 // Third class functions
@@ -105,7 +102,8 @@ void ser_uint8_t_const(std::ostream& stream, const uint8_t* ptr) {
 
 void ser_multi_buf_t(std::ostream& stream, multi_buf_t* gclis_mb) {
 
-	
+	stream << "MULTI_BUF_T" << '\n';
+
 	//magic
 	stream << gclis_mb->magic << ' ';
 	//n_buffers
@@ -117,7 +115,7 @@ void ser_multi_buf_t(std::ostream& stream, multi_buf_t* gclis_mb) {
 	//element_size
 	stream << gclis_mb->element_size << ' ';
 
-	//union bufs todo 
+	/*union bufs todo
 	//int8_t** s8
 	stream << gclis_mb->bufs.s8 << ' ';
 	//uint8_t** u8
@@ -129,21 +127,25 @@ void ser_multi_buf_t(std::ostream& stream, multi_buf_t* gclis_mb) {
 	//int32_t** s32
 	stream << gclis_mb->bufs.s32 << ' ';
 	//uint32_t** u32
-	stream << gclis_mb->bufs.u32 << ' ';
+	stream << gclis_mb->bufs.u32 << ' ';*/
 
 	//FILE** fout todo
-	stream << gclis_mb->fout << ' ';
+	//stream << gclis_mb->fout << ' ';
 
 	//dump_mode
 	stream << gclis_mb->dump_mode << ' ';
 	//void* storage todo
 	//stream << gclis_mb->storage << ' ';
 
+	stream << '\n';
+
 }
 
 
 
 void ser_lvls_map_t(std::ostream& stream, const lvls_map_t* geometry) {
+
+	stream << "LVLS_MAP_T" << '\n';
 
 	//n_comps
 	stream << geometry->n_comps << ' ';
@@ -223,6 +225,8 @@ void ser_lvls_map_t(std::ostream& stream, const lvls_map_t* geometry) {
 	//num_cols
 	stream << geometry->num_cols << ' ';
 
+	stream << '\n';
+
 }
 
 
@@ -237,6 +241,8 @@ void ser_lvls_map_t(std::ostream& stream, const lvls_map_t* geometry) {
 
 
 void ser_tco_conf_t(std::ostream& stream, tco_conf_t* conf) {
+
+	stream << "TCO_CONF_T" << '\n';
 	
 	stream << conf->bitstream_nbytes << ' ';
 	stream << conf->bpp << ' ';
@@ -300,10 +306,15 @@ void ser_tco_conf_t(std::ostream& stream, tco_conf_t* conf) {
 	for (int i = 0; i < MAX_NCOMPS * MAX_FILTER_TYPES; i++) {
 		stream << conf->lvl_priorities[i] << ' ';
 	}
+
+	stream << '\n';
+
 }
 
 
 void ser_precinct_t(std::ostream& stream, precinct_t* precinct) {
+
+	stream << "PRECINCT_T" << '\n';
 
 
 	ser_multi_buf_t(stream, precinct->gclis_mb);
@@ -326,11 +337,15 @@ void ser_precinct_t(std::ostream& stream, precinct_t* precinct) {
 	//column
 	stream << precinct->column << ' ';
 
+	stream << '\n';
+
 
 }
 
 
 void ser_precinct_budget_table_t(std::ostream& stream, precinct_budget_table_t* pbt) {
+
+	stream << "PRECINCT_BTT" << '\n';
 
 	ser_multi_buf_t(stream, pbt->sigf_budget_table);
 	ser_multi_buf_t(stream, pbt->gcli_budget_table);
@@ -341,12 +356,16 @@ void ser_precinct_budget_table_t(std::ostream& stream, precinct_budget_table_t* 
 	stream << pbt->position_count << ' ';
 	//method_count
 	stream << pbt->method_count << ' ';
+
+	stream << '\n';
 	
 
 }
 
 
 void ser_predbuffer_t(std::ostream& stream, predbuffer_t* pred_residuals) {
+
+	stream << "PREDBUFFER_T" << '\n';
 
 	//directional_prediction_struct* ptr = pred_residuals->direction;
 
@@ -355,14 +374,14 @@ void ser_predbuffer_t(std::ostream& stream, predbuffer_t* pred_residuals) {
 		directional_prediction_t direction[PRED_COUNT];
 	};*/
 
-	//multi_buf_t* gclis_mb[MAX_GCLI + 1] todo
+	//multi_buf_t* gclis_mb[MAX_GCLI + 1] 
 	for (int i = 0; i < PRED_COUNT; i++) {
 		for (int j = 0; j < MAX_GCLI + 1; j++) {
 			ser_multi_buf_t(stream, (pred_residuals->direction[i]).gclis_mb[j]);
 		}
 	}
 
-	//multi_buf_t* predictors_mb[MAX_GCLI + 1] todo
+	//multi_buf_t* predictors_mb[MAX_GCLI + 1] 
 	for (int i = 0; i < PRED_COUNT; i++) {
 		for (int j = 0; j < MAX_GCLI + 1; j++) {
 			ser_multi_buf_t(stream, (pred_residuals->direction[i]).predictors_mb[j]);
@@ -380,10 +399,14 @@ void ser_predbuffer_t(std::ostream& stream, predbuffer_t* pred_residuals) {
 		}
 	}
 
+	stream << '\n';
+
 }
 
 
 void ser_params_t(std::ostream& stream, ra_params_t* ra_params) {
+
+	stream << "PARAMS_T" << '\n';
 
 	//use_sign_packing
 	stream << ra_params->use_sign_packing << ' ';
@@ -406,10 +429,14 @@ void ser_params_t(std::ostream& stream, ra_params_t* ra_params) {
 	//uint8_t* lvl_priorities
 	ser_uint8_t(stream, ra_params->lvl_priorities);
 
+	stream << '\n';
+
 }
 
 
 void ser_precinct_budget_info_t(std::ostream& stream, precinct_budget_info_t* pbinfo) {
+
+	stream << "PRECINCT_BIT" << '\n';
 
 
 	//precinct_bits
@@ -477,15 +504,17 @@ void ser_precinct_budget_info_t(std::ostream& stream, precinct_budget_info_t* pb
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_alignbits_sign[i] << ' ';
 	}
+
+	stream << '\n';
 	
 }
 
 
-void ser_budget_dump_struct_t(std::ostream& stream, struct budget_dump_struct_t* budget_dump_handle) {
+void ser_budget_dump_struct_t(std::ostream& stream, budget_dump_struct_t* budget_dump_handle) {
 	//todo
-	//if (budget_dump_handle == nullptr) { return; }
-	//output_file -> FILE*-> void* _Placeholder todo
-	stream << budget_dump_handle->output_file->_Placeholder << ' ';
+	if (budget_dump_handle == nullptr) { return; };
+	//FILE* output_file todo
+	//stream << budget_dump_handle->output_file->_Placeholder << ' ';
 	//n_lvls
 	stream << budget_dump_handle->n_lvls << ' ';
 	//max_column_size
@@ -512,6 +541,8 @@ void ser_budget_dump_struct_t(std::ostream& stream, struct budget_dump_struct_t*
 //
 
 void ser_rate_control_t(std::ostream& stream, rate_control_t* rc) {
+
+	stream << "RC" << '\n';
 
 	ser_tco_conf_t(stream, &(rc->conf));
 
@@ -561,11 +592,14 @@ void ser_rate_control_t(std::ostream& stream, rate_control_t* rc) {
 
 	ser_budget_dump_struct_t(stream, rc->budget_dump_handle);
 
+	stream << '\n';
+
 }
 
 
 void ser_rc_results_t(std::ostream& stream, rc_results_t* rc_results) {
 
+	stream << "RC_RESULTS" << '\n';
 
 	//scenario
 	stream << rc_results->scenario << ' ';
@@ -597,6 +631,8 @@ void ser_rc_results_t(std::ostream& stream, rc_results_t* rc_results) {
 
 	//rc_error
 	stream << rc_results->rc_error << ' ';
+
+	stream << '\n';
 
 }
 

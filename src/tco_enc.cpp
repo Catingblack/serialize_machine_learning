@@ -428,10 +428,13 @@ int tco_enc_image( tco_enc_context_t* ctx, image_t* image_in, void* codestream_b
 			fill_precinct(ctx->precinct[column],ctx->image_transformed, line_idx >> (ctx->map.n_lvls_v - 1));
 			update_gclis(ctx->precinct[column]);
 
+
 			//todo serialize params
 			if (rate_control_process_presinct(ctx->rc[column], ctx->precinct[column], &rc_results) < 0) {
 				return -1;
 			}
+
+
 
 			std::ofstream outfile("data.txt");
 			//C:\cpp\jpeg - xsm - ref_sw\serialize_machine_learning\build\vs_20150
@@ -442,6 +445,8 @@ int tco_enc_image( tco_enc_context_t* ctx, image_t* image_in, void* codestream_b
 			ser_rc_results_t(outfile, &rc_results);
 
 			outfile.close();
+
+			
 
 			//deser(ctx->rc[column])
 

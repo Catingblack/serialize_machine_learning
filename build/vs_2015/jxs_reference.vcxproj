@@ -251,6 +251,7 @@
     <ClInclude Include="..\..\src\buf_mgmt.h" />
     <ClInclude Include="..\..\src\common.h" />
     <ClInclude Include="..\..\src\data_budget.h" />
+    <ClInclude Include="..\..\src\deserialaize.h" />
     <ClInclude Include="..\..\src\dwt22.h" />
     <ClInclude Include="..\..\src\dwt53.h" />
     <ClInclude Include="..\..\src\gcli.h" />
