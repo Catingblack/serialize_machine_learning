@@ -64,31 +64,43 @@ struct budget_dump_struct_t {
 //serialize for ptr
 
 void ser_int(std::ostream& stream, int* ptr) {
+
+	stream << '\n' << "*POINTER" << '\n';
+	stream << '/n';
 	if (ptr == nullptr) {
 		stream << "null" << ' ';
 	}
 	else {
 		stream << *ptr << ' ';
 	}
+	stream << '/n';
 }
 
 
 void ser_uint8_t(std::ostream& stream, uint8_t* ptr) {
+
+	stream << '\n' << "*POINTER" << '/n';
+	stream << '/n';
 	if (ptr == nullptr) {
 		stream << "null" << ' ';
 	}
 	else {
 		stream << *ptr << ' ';
 	}
+	stream << '/n';
 }
 
 void ser_uint8_t_const(std::ostream& stream, const uint8_t* ptr) {
+
+	stream << '\n' << "*POINTER" << '/n';
+	stream << '/n';
 	if (ptr == nullptr) {
 		stream << "null" << ' ';
 	}
 	else {
 		stream << *ptr << ' ';
 	}
+	stream << '/n';
 }
 
 
@@ -102,7 +114,7 @@ void ser_uint8_t_const(std::ostream& stream, const uint8_t* ptr) {
 
 void ser_multi_buf_t(std::ostream& stream, multi_buf_t* gclis_mb) {
 
-	stream << "MULTI_BUF_T" << '\n';
+	stream << '\n' << "^^^MULTI_BUF_T" << '\n';
 
 	//magic
 	stream << gclis_mb->magic << ' ';
@@ -115,27 +127,24 @@ void ser_multi_buf_t(std::ostream& stream, multi_buf_t* gclis_mb) {
 	//element_size
 	stream << gclis_mb->element_size << ' ';
 
-	/*union bufs todo
+	//union bufs todo
+	
 	//int8_t** s8
-	stream << gclis_mb->bufs.s8 << ' ';
 	//uint8_t** u8
-	stream << gclis_mb->bufs.u8 << ' ';
 	//int16_t** s16
-	stream << gclis_mb->bufs.s16 << ' ';
 	//uint16_t**
-	stream << gclis_mb->bufs.u16 << ' ';
 	//int32_t** s32
-	stream << gclis_mb->bufs.s32 << ' ';
 	//uint32_t** u32
-	stream << gclis_mb->bufs.u32 << ' ';*/
 
-	//FILE** fout todo
-	//stream << gclis_mb->fout << ' ';
+	stream << '\n' << "BUFS" << '\n';
+	stream << **(gclis_mb->bufs.u32) << '\n';
+	
+	//FILE** fout todo nullptr
 
 	//dump_mode
 	stream << gclis_mb->dump_mode << ' ';
+
 	//void* storage todo
-	//stream << gclis_mb->storage << ' ';
 
 	stream << '\n';
 
@@ -145,7 +154,7 @@ void ser_multi_buf_t(std::ostream& stream, multi_buf_t* gclis_mb) {
 
 void ser_lvls_map_t(std::ostream& stream, const lvls_map_t* geometry) {
 
-	stream << "LVLS_MAP_T" << '\n';
+	stream << '\n' << "^^^LVLS_MAP_T" << '\n';
 
 	//n_comps
 	stream << geometry->n_comps << ' ';
@@ -153,9 +162,11 @@ void ser_lvls_map_t(std::ostream& stream, const lvls_map_t* geometry) {
 	stream << geometry->n_lvls_v << ' ';
 	
 	//n_lvls_h[MAX_NDECOMP_V + 1]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_NDECOMP_V + 1; i++) {
 		stream << geometry->n_lvls_h[i] << ' ';
 	}
+	stream << '/n';
 
 	//n_lvls_per_comp
 	stream << geometry->n_lvls_per_comp << ' ';
@@ -167,54 +178,70 @@ void ser_lvls_map_t(std::ostream& stream, const lvls_map_t* geometry) {
 	stream << geometry->position_count << ' ';
 
 	//lvls_order_map[MAX_BANDLINES]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_BANDLINES; i++) {
 		stream << geometry->lvls_order_map[i] << ' ';
 	}
+	stream << '/n';
 
-	//ypos_order_map
+	//ypos_order_map[MAX_BANDLINES]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_BANDLINES; i++) {
 		stream << geometry->ypos_order_map[i] << ' ';
 	}
+	stream << '/n';
 
 
 	//position_from_lvl_ypos[MAX_LVLS][MAX_NDECOMP_V]
+	stream << '\n' << "ArrArr:" << ' ';
 	for (int i = 0; i < MAX_LVLS; i++) {
 		for (int j = 0; j < MAX_NDECOMP_V; j++) {
 			stream << geometry->position_from_lvl_ypos[i][j] << ' ';
 		}
 	}
+	stream << '/n';
 
 	//positions_subpkt[MAX_BANDLINES]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_BANDLINES; i++) {
 		stream << geometry->positions_subpkt[i] << ' ';
 	}
+	stream << '/n';
 
 	//n_subpkt
 	stream << geometry->n_subpkt << ' ';
 
 	//v_from_lvl[MAX_LVLS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_LVLS; i++) {
 		stream << geometry->v_from_lvl[i] << ' ';
 	}
+	stream << '/n';
 
 	//h_from_lvl[MAX_LVLS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_LVLS; i++) {
 		stream << geometry->h_from_lvl[i] << ' ';
 	}
+	stream << '/n';
 
 	//band_widths[MAX_NCOMPS][MAX_LVLS]
+	stream << '\n' << "ArrArr:" << ' ';
 	for (int i = 0; i < MAX_NCOMPS; i++) {
 		for (int j = 0; j < MAX_LVLS; j++) {
 			stream << geometry->band_widths[i][j] << ' ';
 		}
 	}
+	stream << '/n';
 
 	//band_heights[MAX_NCOMPS][MAX_LVLS]
+	stream << '\n' << "ArrArr:" << ' ';
 	for (int i = 0; i < MAX_NCOMPS; i++) {
 		for (int j = 0; j < MAX_LVLS; j++) {
 			stream << geometry->band_heights[i][j] << ' ';
 		}
 	}
+	stream << '/n';
 
 	//lvls_size_max
 	stream << geometry->lvls_size_max << ' ';
@@ -242,7 +269,7 @@ void ser_lvls_map_t(std::ostream& stream, const lvls_map_t* geometry) {
 
 void ser_tco_conf_t(std::ostream& stream, tco_conf_t* conf) {
 
-	stream << "TCO_CONF_T" << '\n';
+	stream << '\n' << "^^TCO_CONF_T" << '\n';
 	
 	stream << conf->bitstream_nbytes << ' ';
 	stream << conf->bpp << ' ';
@@ -298,11 +325,13 @@ void ser_tco_conf_t(std::ostream& stream, tco_conf_t* conf) {
 	stream << conf->codesig_with_0 << ' ';
 	stream << conf->gains_choice << ' ';
 
-
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_NCOMPS * MAX_FILTER_TYPES; i++) {
 		stream << conf->lvl_gains[i] << ' ';
 	}
+	stream << '\n';
 
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_NCOMPS * MAX_FILTER_TYPES; i++) {
 		stream << conf->lvl_priorities[i] << ' ';
 	}
@@ -314,7 +343,7 @@ void ser_tco_conf_t(std::ostream& stream, tco_conf_t* conf) {
 
 void ser_precinct_t(std::ostream& stream, precinct_t* precinct) {
 
-	stream << "PRECINCT_T" << '\n';
+	stream << '\n'  << "^^PRECINCT_T" << '\n';
 
 
 	ser_multi_buf_t(stream, precinct->gclis_mb);
@@ -326,11 +355,13 @@ void ser_precinct_t(std::ostream& stream, precinct_t* precinct) {
 	stream << precinct->group_size << ' ';
 
 	//idx_from_level[MAX_PRECINCT_HEIGHT][MAX_LVLS]
+	stream << '\n' << "ArrArr:" << ' ';
 	for (int i = 0; i < MAX_PRECINCT_HEIGHT; i++) {
 		for (int j = 0; j < MAX_LVLS; j++) {
 			stream << precinct->idx_from_level[i][j] << ' ';
 		}
 	}
+	stream << '\n';
 
 	//idx
 	stream << precinct->idx << ' ';
@@ -345,7 +376,7 @@ void ser_precinct_t(std::ostream& stream, precinct_t* precinct) {
 
 void ser_precinct_budget_table_t(std::ostream& stream, precinct_budget_table_t* pbt) {
 
-	stream << "PRECINCT_BTT" << '\n';
+	stream << '\n' << "^^PRECINCT_BTT" << '\n';
 
 	ser_multi_buf_t(stream, pbt->sigf_budget_table);
 	ser_multi_buf_t(stream, pbt->gcli_budget_table);
@@ -365,7 +396,7 @@ void ser_precinct_budget_table_t(std::ostream& stream, precinct_budget_table_t* 
 
 void ser_predbuffer_t(std::ostream& stream, predbuffer_t* pred_residuals) {
 
-	stream << "PREDBUFFER_T" << '\n';
+	stream << '\n' << "^^PREDBUFFER_T" << '\n';
 
 	//directional_prediction_struct* ptr = pred_residuals->direction;
 
@@ -375,28 +406,34 @@ void ser_predbuffer_t(std::ostream& stream, predbuffer_t* pred_residuals) {
 	};*/
 
 	//multi_buf_t* gclis_mb[MAX_GCLI + 1] 
+	stream << '\n' << "ArrArr:" << ' ';
 	for (int i = 0; i < PRED_COUNT; i++) {
 		for (int j = 0; j < MAX_GCLI + 1; j++) {
 			ser_multi_buf_t(stream, (pred_residuals->direction[i]).gclis_mb[j]);
 		}
 	}
+	stream << '\n';
 
 	//multi_buf_t* predictors_mb[MAX_GCLI + 1] 
+	stream << '\n' << "ArrArr:" << ' ';
 	for (int i = 0; i < PRED_COUNT; i++) {
 		for (int j = 0; j < MAX_GCLI + 1; j++) {
 			ser_multi_buf_t(stream, (pred_residuals->direction[i]).predictors_mb[j]);
 		}
 	}
+	stream << '\n';
 
 
 	//idx_from_level[MAX_PRECINCT_HEIGHT][MAX_LVLS]
-
+	
 	for (int i = 0; i < PRED_COUNT; i++) {
+		stream << '\n' << "ArrArr:" << ' ';
 		for (int j = 0; j < MAX_PRECINCT_HEIGHT; j++) {
 			for (int k = 0; k < MAX_LVLS; k++) {
 				stream << (pred_residuals->direction[i]).idx_from_level[j][k] << ' ';
 			}
 		}
+		stream << '\n';
 	}
 
 	stream << '\n';
@@ -406,7 +443,7 @@ void ser_predbuffer_t(std::ostream& stream, predbuffer_t* pred_residuals) {
 
 void ser_params_t(std::ostream& stream, ra_params_t* ra_params) {
 
-	stream << "PARAMS_T" << '\n';
+	stream << '\n' <<  "^^PARAMS_T" << '\n';
 
 	//use_sign_packing
 	stream << ra_params->use_sign_packing << ' ';
@@ -436,74 +473,98 @@ void ser_params_t(std::ostream& stream, ra_params_t* ra_params) {
 
 void ser_precinct_budget_info_t(std::ostream& stream, precinct_budget_info_t* pbinfo) {
 
-	stream << "PRECINCT_BIT" << '\n';
+	stream << '\n' <<  "^^PRECINCT_BIT" << '\n';
 
 
 	//precinct_bits
 	stream << pbinfo->precinct_bits << ' ';
 	
 	//subpkt_uses_raw_fallback[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_uses_raw_fallback[i] << ' ';
 	}
+	stream << '\n';
 
 	//prec_header_size
 	stream << pbinfo->prec_header_size << ' ';
 
 	//pkt_header_size[MAX_BANDLINES]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_BANDLINES; i++) {
 		stream << pbinfo->pkt_header_size[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_size_sigf[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_size_sigf[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_size_gcli[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_size_gcli[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_size_gcli_raw[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_size_gcli_raw[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_size_data[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_size_data[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_size_sign[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_size_sign[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_alignbits_sigf[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_alignbits_sigf[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_alignbits_gcli[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_alignbits_gcli[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_alignbits_gcli_raw[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_alignbits_gcli_raw[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_alignbits_data[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_alignbits_data[i] << ' ';
 	}
+	stream << '\n';
 
 	//subpkt_alignbits_sign[MAX_SUBPKTS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_SUBPKTS; i++) {
 		stream << pbinfo->subpkt_alignbits_sign[i] << ' ';
 	}
+	stream << '\n';
 
 	stream << '\n';
 	
@@ -512,20 +573,28 @@ void ser_precinct_budget_info_t(std::ostream& stream, precinct_budget_info_t* pb
 
 void ser_budget_dump_struct_t(std::ostream& stream, budget_dump_struct_t* budget_dump_handle) {
 	//todo
-	if (budget_dump_handle == nullptr) { return; };
+	if (budget_dump_handle == nullptr) {
+		return;
+	};
+
+
 	//FILE* output_file todo
-	//stream << budget_dump_handle->output_file->_Placeholder << ' ';
+	stream << "FILE:" << '\n';
+	stream << budget_dump_handle->output_file << '\n';
+
 	//n_lvls
 	stream << budget_dump_handle->n_lvls << ' ';
 	//max_column_size
 	stream << budget_dump_handle->max_column_size << ' ';
 
 	//scenario2gtli_table[MAX_GCLI + 1][MAX_LVLS]
+	stream << '\n' << "ArrArr:" << ' ';
 	for (int i = 0; i < MAX_GCLI + 1; i++) {
 		for (int j = 0; j < MAX_LVLS; j++) {
 			stream << budget_dump_handle->scenario2gtli_table[i][j] << ' ';
 		}
 	}
+	stream << '\n';
 
 	//const uint8_t* sb_priority
 	ser_uint8_t_const(stream, budget_dump_handle->sb_priority);
@@ -541,8 +610,8 @@ void ser_budget_dump_struct_t(std::ostream& stream, budget_dump_struct_t* budget
 //
 
 void ser_rate_control_t(std::ostream& stream, rate_control_t* rc) {
-
-	stream << "RC" << '\n';
+	
+	stream << "^RC" << '\n';
 
 	ser_tco_conf_t(stream, &(rc->conf));
 
@@ -584,11 +653,13 @@ void ser_rate_control_t(std::ostream& stream, rate_control_t* rc) {
 	ser_precinct_budget_info_t(stream, rc->pbinfo);
 
 	//scenario2gtli_table[MAX_GCLI + 1][MAX_LVLS]
+	stream << '\n' << "ArrArr:" << ' ';
 	for (int i = 0; i < MAX_GCLI + 1; i++) {
 		for (int j = 0; j < MAX_LVLS; j++) {
 			stream << rc->scenario2gtli_table[i][j] << ' ';
 		}
 	}
+	stream << '\n';
 
 	ser_budget_dump_struct_t(stream, rc->budget_dump_handle);
 
@@ -599,7 +670,7 @@ void ser_rate_control_t(std::ostream& stream, rate_control_t* rc) {
 
 void ser_rc_results_t(std::ostream& stream, rc_results_t* rc_results) {
 
-	stream << "RC_RESULTS" << '\n';
+	stream << "^RC_RESULTS" << '\n';
 
 	//scenario
 	stream << rc_results->scenario << ' ';
@@ -609,9 +680,11 @@ void ser_rc_results_t(std::ostream& stream, rc_results_t* rc_results) {
 	stream << rc_results->gcli_method << ' ';
 
 	//gcli_sb_methods[MAX_LVLS]
+	stream << '\n' << "Arr:" << ' ';
 	for (int i = 0; i < MAX_LVLS; i++) {
 		stream << rc_results->gcli_sb_methods[i] << ' ';
 	}
+	stream << '\n';
 
 	ser_precinct_budget_info_t(stream, &(rc_results->pbinfo));
 
